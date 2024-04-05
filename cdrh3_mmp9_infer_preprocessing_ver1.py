@@ -163,6 +163,6 @@ def infer(df_test_ab):
 #df_test_ab = pd.read_csv("drive/MyDrive/Protein_Engineering_Project/Test_Ab_vs_MMP9_from_Masoud.csv")
 #print("Total test sequences: ", len(df_test_ab))
 
-inference = infer(df_test_ab)
+#inference = infer(df_test_ab)
 
-inference.head()
+#inference.head()
