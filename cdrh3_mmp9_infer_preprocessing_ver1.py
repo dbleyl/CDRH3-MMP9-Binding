@@ -145,7 +145,7 @@ def infer(df_test_ab):
   test_ab_650MB_array, df_test_ab_shuffled = infer_preprocessing(df_test_ab)
 
   #lstm_model_650MB = keras.models.load_model("drive/MyDrive/Protein_Engineering_Project/lstm_650MB_run1_SHAP_Mask_revised_mmp9_030824")
-  lstm_model_650MB = keras.models.load_model("content/CDRH3-MMP9-Binding/saved-representations-and-models/lstm_650MB_run1_SHAP_Mask_revised_mmp9_030824")
+  lstm_model_650MB = keras.models.load_model("/content/CDRH3-MMP9-Binding/saved-representations-and-models/lstm_650MB_run1_SHAP_Mask_revised_mmp9_030824")
   y_pred = lstm_model_650MB.predict(test_ab_650MB_array, verbose=1)
 
   predictions = ['Positive' if i > 0.5 else 'Negative' for i in y_pred]
