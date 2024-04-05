@@ -357,7 +357,7 @@ def antiberty_representations(df_shuffled_list,df_sequence_shuffled_list):
 
 def infer(df_test_ab,model):
 
-   df_test_ab_shuffled, df_shuffled_list, df_binding_AA_shuffled_list, df_sequence_shuffled_list = infer_preprocessing(df_test_ab)
+  df_test_ab_shuffled, df_shuffled_list, df_binding_AA_shuffled_list, df_sequence_shuffled_list = infer_preprocessing(df_test_ab)
 
   #lstm_model_650MB = keras.models.load_model("drive/MyDrive/Protein_Engineering_Project/lstm_650MB_run1_SHAP_Mask_revised_mmp9_030824")
   if model == 'ESM2 650MB':
