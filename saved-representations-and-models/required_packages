@@ -1,0 +1,3 @@
+transformers
+fair-esm
+keras-tuner --upgrade
