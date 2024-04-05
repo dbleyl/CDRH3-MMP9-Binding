@@ -63,7 +63,7 @@ def infer_preprocessing(df_test_ab):
 
   return df_test_ab_shuffled, df_shuffled_list, df_binding_AA_shuffled_list, df_sequence_shuffled_list
 
-def 650MB_representations(df_shuffled_list,df_binding_AA_shuffled_list):
+def representations_650MB(df_shuffled_list,df_binding_AA_shuffled_list):
 
   import torch
   import esm
@@ -145,7 +145,7 @@ def 650MB_representations(df_shuffled_list,df_binding_AA_shuffled_list):
 
   return test_ab_650MB_array
 
-def 3B_representations(df_shuffled_list,df_binding_AA_shuffled_list):
+def representations_3B(df_shuffled_list,df_binding_AA_shuffled_list):
 
     import torch
     import esm
@@ -230,7 +230,7 @@ def 3B_representations(df_shuffled_list,df_binding_AA_shuffled_list):
     
     return test_ab_3B_array
 
-def 15B_representations(df_shuffled_list,df_sequence_shuffled_list):
+def representations_15B(df_shuffled_list,df_sequence_shuffled_list):
 
     import transformers
     checkpoint = "Rocketknight1/esm2_t48_15B_UR50D"
@@ -362,13 +362,13 @@ def infer(df_test_ab,model):
   #lstm_model_650MB = keras.models.load_model("drive/MyDrive/Protein_Engineering_Project/lstm_650MB_run1_SHAP_Mask_revised_mmp9_030824")
   if model == 'ESM2 650MB':
       lstm_model = keras.models.load_model("/content/CDRH3-MMP9-Binding/saved-representations-and-models/lstm_650MB_run1_SHAP_Mask_revised_mmp9_030824")
-      test_ab_array = 650MB_representations(df_shuffled_list,df_binding_AA_shuffled_list)
+      test_ab_array = representations_650MB(df_shuffled_list,df_binding_AA_shuffled_list)
   elif model == 'ESM2 3B':
       lstm_model = keras.models.load_model("/content/CDRH3-MMP9-Binding/saved-representations-and-models/lstm_3B_run1_SHAP_revised_mmp9_030824")
-      test_ab_array = 3B_representations(df_shuffled_list,df_binding_AA_shuffled_list)
+      test_ab_array = representations_3B(df_shuffled_list,df_binding_AA_shuffled_list)
   elif model == 'ESM2 15B':
       lstm_model = keras.models.load_model("/content/CDRH3-MMP9-Binding/saved-representations-and-models/lstm_15B_SHAP_run1_revised_mmp9_030824")
-      test_ab_array = 15B_representations(df_shuffled_list,df_sequence_shuffled_list)
+      test_ab_array = representations_15B(df_shuffled_list,df_sequence_shuffled_list)
   else:
       lstm_model = keras.models.load_model("/content/CDRH3-MMP9-Binding/saved-representations-and-models/lstm_antiberty_run1_SHAP_Mask_revised_mmp9_030824")
       test_ab_array = antiberty_representations(df_shuffled_list,df_sequence_shuffled_list)
