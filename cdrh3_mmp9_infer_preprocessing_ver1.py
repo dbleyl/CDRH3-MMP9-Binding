@@ -9,9 +9,9 @@ Original file is located at
 ## Installing transormers and required libraries
 """
 
-!pip install transformers
-!pip install fair-esm
-!pip install keras-tuner --upgrade
+#!pip install transformers
+#!pip install fair-esm
+#!pip install keras-tuner --upgrade
 
 import pandas as pd
 import numpy as np
@@ -19,8 +19,8 @@ import csv
 import tensorflow as tf
 from tensorflow import keras
 
-from google.colab import drive
-drive.mount('/content/drive')
+#from google.colab import drive
+#drive.mount('/content/drive')
 
 """# Creating represenations and predictions for test ab vs MMP-9 sent by Masoud
 
@@ -160,8 +160,8 @@ def infer(df_test_ab):
   return result
 
 #Create Positive and Negative binding data frames from cleaned csv files
-df_test_ab = pd.read_csv("drive/MyDrive/Protein_Engineering_Project/Test_Ab_vs_MMP9_from_Masoud.csv")
-print("Total test sequences: ", len(df_test_ab))
+#df_test_ab = pd.read_csv("drive/MyDrive/Protein_Engineering_Project/Test_Ab_vs_MMP9_from_Masoud.csv")
+#print("Total test sequences: ", len(df_test_ab))
 
 inference = infer(df_test_ab)
 
