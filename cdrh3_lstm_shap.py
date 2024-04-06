@@ -7,7 +7,7 @@ def shap_plots(model, test_ab_array, df_test_ab_shuffled):
     import pickle
     if model == 'ESM2 650MB':
         lstm_model = keras.models.load_model("/content/CDRH3-MMP9-Binding/saved-representations-and-models/lstm_650MB_run1_SHAP_Mask_revised_mmp9_030824")
-        with open('/content/CDRH3-MMP9-Binding/saved-representations-and-models/x_training_650MB_array_run3_test_ab.pkl', 'rb') as f:
+        with open('/content/x_training_650MB_array_run3_test_ab.pkl', 'rb') as f:
             X_training_array = pickle.load(f)
     elif model == 'ESM2 3B':
         lstm_model = keras.models.load_model("/content/CDRH3-MMP9-Binding/saved-representations-and-models/lstm_3B_run1_SHAP_revised_mmp9_030824")
@@ -17,7 +17,7 @@ def shap_plots(model, test_ab_array, df_test_ab_shuffled):
         test_ab_array = representations_15B(df_shuffled_list,df_sequence_shuffled_list)
     else:
         lstm_model = keras.models.load_model("/content/CDRH3-MMP9-Binding/saved-representations-and-models/lstm_antiberty_run1_SHAP_Mask_revised_mmp9_030824")
-        with open('/content/CDRH3-MMP9-Binding/saved-representations-and-models/x_training_antiberty_array_run3_test_ab.pkl', 'rb') as f:
+        with open('/content/x_training_antiberty_array_run3_test_ab.pkl', 'rb') as f:
             X_training_array = pickle.load(f)
 
 
