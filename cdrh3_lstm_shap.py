@@ -3,7 +3,7 @@
 #tf.compat.v1.disable_v2_behavior()
 #tf.compat.v1.disable_eager_execution()
 #!pip install shap
-def shap_plots(model, test_ab_array, df_test_ab_shuffled):
+def shap_plots(model, test_ab_array, df_test_ab_shuffled, result):
     import tensorflow as tf
     tf.compat.v1.disable_v2_behavior()
     from tensorflow import keras
