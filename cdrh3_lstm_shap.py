@@ -9,6 +9,7 @@ def shap_plots(model, test_ab_array, df_test_ab_shuffled, result):
     from tensorflow import keras
     import numpy as np
     import pickle
+    import streamlit as st
     if model == 'ESM2 650MB':
         lstm_model = keras.models.load_model("/content/CDRH3-MMP9-Binding/saved-representations-and-models/lstm_650MB_run1_SHAP_Mask_revised_mmp9_030824")
         with open('/content/x_training_650MB_array_run3_test_ab.pkl', 'rb') as f:
@@ -26,8 +27,9 @@ def shap_plots(model, test_ab_array, df_test_ab_shuffled, result):
 
 
     #print("test shape", X_test_650MB_array.shape)
-    print("training array shape", X_training_array.shape )
-    print("test shape", test_ab_array.shape)
+    #print("training array shape", X_training_array.shape )
+    st.write("training array shape", X_training_array.shape )
+    st.write("test shape", test_ab_array.shape)
 
     import shap
 
@@ -35,11 +37,11 @@ def shap_plots(model, test_ab_array, df_test_ab_shuffled, result):
     shap_values1 = explainer.shap_values(test_ab_array, check_additivity=False)
     import matplotlib
     shap.initjs()
-    print("Model:", model)
+    st.write("Model:", model)
     for i in range(len(df_test_ab_shuffled)):
         CDRH3_String= df_test_ab_shuffled.iloc[i,4]
         binding = result.iloc[i,1]
-        print(str(i+1) + " CDRH3: ", CDRH3_String + ", Predicted Binding: ", binding)
+        st.write(str(i+1) + " CDRH3: ", CDRH3_String + ", Predicted Binding: ", binding)
         cdrh3_aa_list = []
         m=1
         for aa in CDRH3_String:
@@ -48,5 +50,5 @@ def shap_plots(model, test_ab_array, df_test_ab_shuffled, result):
         array_shap_values1 = np.array(shap_values1[i])
         array_shap_values1_sum=np.sum(array_shap_values1[0:len(CDRH3_String)], axis=1)
         array_shap_values1_sum_reduced = array_shap_values1_sum[:,0]
-        (shap.force_plot(explainer.expected_value[0], array_shap_values1_sum_reduced,cdrh3_aa_list,matplotlib=matplotlib))
+        st.pyplot((shap.force_plot(explainer.expected_value[0], array_shap_values1_sum_reduced,cdrh3_aa_list,matplotlib=matplotlib)))
 
