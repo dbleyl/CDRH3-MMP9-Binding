@@ -7,6 +7,7 @@ def shap_plots(model, test_ab_array, df_test_ab_shuffled, result):
     import tensorflow as tf
     tf.compat.v1.disable_v2_behavior()
     from tensorflow import keras
+    import numpy as np
     import pickle
     if model == 'ESM2 650MB':
         lstm_model = keras.models.load_model("/content/CDRH3-MMP9-Binding/saved-representations-and-models/lstm_650MB_run1_SHAP_Mask_revised_mmp9_030824")
