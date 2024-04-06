@@ -389,7 +389,7 @@ def infer(df_test_ab,model):
   result['prediction'] = predictions
   result['confidence'] = confidence
 
-  return result
+  return result, test_ab_array, df_test_ab_shuffled
 
 #Create Positive and Negative binding data frames from cleaned csv files
 #df_test_ab = pd.read_csv("drive/MyDrive/Protein_Engineering_Project/Test_Ab_vs_MMP9_from_Masoud.csv")
