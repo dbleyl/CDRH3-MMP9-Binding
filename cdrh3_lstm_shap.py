@@ -33,16 +33,16 @@ def shap_plots(model, test_ab_array, df_test_ab_shuffled):
     shap.initjs()
     print("Model:", model)
     for i in range(len(df_test_ab_shuffled)):
-    CDRH3_String= df_test_ab_shuffled.iloc[i,4]
-    binding = result.iloc[i,1]
-    print(str(i+1) + " CDRH3: ", CDRH3_String + ", Predicted Binding: ", binding)
-    cdrh3_aa_list = []
-    m=1
-    for aa in CDRH3_String:
-        cdrh3_aa_list.append(aa + str(m))
-        m=m+1
-    array_shap_values1 = np.array(shap_values1[i])
-    array_shap_values1_sum=np.sum(array_shap_values1[0:len(CDRH3_String)], axis=1)
-    array_shap_values1_sum_reduced = array_shap_values1_sum[:,0]
-    (shap.force_plot(explainer.expected_value[0], array_shap_values1_sum_reduced,cdrh3_aa_list,matplotlib=matplotlib))
+        CDRH3_String= df_test_ab_shuffled.iloc[i,4]
+        binding = result.iloc[i,1]
+        print(str(i+1) + " CDRH3: ", CDRH3_String + ", Predicted Binding: ", binding)
+        cdrh3_aa_list = []
+        m=1
+        for aa in CDRH3_String:
+            cdrh3_aa_list.append(aa + str(m))
+            m=m+1
+        array_shap_values1 = np.array(shap_values1[i])
+        array_shap_values1_sum=np.sum(array_shap_values1[0:len(CDRH3_String)], axis=1)
+        array_shap_values1_sum_reduced = array_shap_values1_sum[:,0]
+        (shap.force_plot(explainer.expected_value[0], array_shap_values1_sum_reduced,cdrh3_aa_list,matplotlib=matplotlib))
 
