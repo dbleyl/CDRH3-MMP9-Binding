@@ -29,9 +29,6 @@ Ifthi: Test_Ab file from Masoud
 
 def infer_preprocessing(df_test_ab):
 
-  #The max_CDRH3 length in the training file is 17. Hence hardcoded here.
-  max_CDRH3_length = 17
-
   #Ifthi: Preses command+curly braces to indent blocks of code
   #Creating new column 'Binding' containing affinity labels
   #ifthi adding dummy binding and binding labels. Not actual ones just to keep the input file in the same format as the original ones used for training.
@@ -136,6 +133,8 @@ def representations_650MB(df_shuffled_list,df_binding_AA_shuffled_list):
   padding = (0,0,0,1)
   pad = nn.ZeroPad2d(padding)
   #max_CDRH3_length = 10
+  #The max_CDRH3 length in the training file is 17. Hence hardcoded here.
+  max_CDRH3_length = 17
   for i in range(len(embedding_list_650MB)):
     number_of_padding_required = max_CDRH3_length - len(embedding_list_650MB[i])
     for j in range(number_of_padding_required):
@@ -221,6 +220,8 @@ def representations_3B(df_shuffled_list,df_binding_AA_shuffled_list):
     padding = (0,0,0,1)
     pad = nn.ZeroPad2d(padding)
     #max_CDRH3_length = 10
+    #The max_CDRH3 length in the training file is 17. Hence hardcoded here.
+    max_CDRH3_length = 17
     for i in range(len(embedding_list_3B)):
       number_of_padding_required = max_CDRH3_length - len(embedding_list_3B[i])
       for j in range(number_of_padding_required):
@@ -293,6 +294,8 @@ def representations_15B(df_shuffled_list,df_sequence_shuffled_list):
     padding = (0,0,0,1)
     pad = nn.ZeroPad2d(padding)
     #max_CDRH3_length = 10
+    #The max_CDRH3 length in the training file is 17. Hence hardcoded here.
+    max_CDRH3_length = 17
     for i in range(len(embedding_list_15B)):
       number_of_padding_required = max_CDRH3_length - len(embedding_list_15B[i])
       for j in range(number_of_padding_required):
@@ -346,6 +349,8 @@ def antiberty_representations(df_shuffled_list,df_sequence_shuffled_list):
     padding = (0,0,0,1)
     pad = nn.ZeroPad2d(padding)
     #max_CDRH3_length = 10
+    #The max_CDRH3 length in the training file is 17. Hence hardcoded here.
+    max_CDRH3_length = 17
     for i in range(len(sequence_representations_antiberty)):
       number_of_padding_required = max_CDRH3_length - len(sequence_representations_antiberty[i])
       for j in range(number_of_padding_required):
