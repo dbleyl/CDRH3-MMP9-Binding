@@ -50,5 +50,7 @@ def shap_plots(model, test_ab_array, df_test_ab_shuffled, result):
         array_shap_values1 = np.array(shap_values1[i])
         array_shap_values1_sum=np.sum(array_shap_values1[0:len(CDRH3_String)], axis=1)
         array_shap_values1_sum_reduced = array_shap_values1_sum[:,0]
-        st.pyplot((shap.force_plot(explainer.expected_value[0], array_shap_values1_sum_reduced,cdrh3_aa_list,matplotlib=matplotlib)))
+        #st.pyplot((shap.force_plot(explainer.expected_value[0], array_shap_values1_sum_reduced,cdrh3_aa_list,matplotlib=matplotlib)))
+        fig = (shap.force_plot(explainer.expected_value[0], array_shap_values1_sum_reduced,cdrh3_aa_list,matplotlib=matplotlib))
+        st.pyplot(fig)
 
