@@ -5,6 +5,33 @@
 
 #Function to split numpy arrays X and Y to train and test. Train (80%) and Test (20%)
 
+from keras import backend as K
+
+def f1_score(precision, recall):
+    return 2*((precision*recall)/(precision+recall+K.epsilon()))
+
+#every sample in train/validation/test is a 2d tensor of shape (sequence_length, num_features)
+
+def build_LSTM(sequence_length, num_features):
+  inputs = keras.Input(shape=(sequence_length, num_features))
+  x=layers.Masking(mask_value=0)(inputs)
+  #x = layers.LSTM(16)(inputs)
+  x = layers.LSTM(16)(x)
+  #The first hidden layer  is a dense/fully connected layer
+  x=layers.Dense(16, activation='relu', kernel_initializer=tf.keras.initializers.he_normal(seed=1))(x)
+  #The final output layer has one neuron with sigmoid activation to output the probability of the target class
+  outputs=layers.Dense(1, activation="sigmoid")(x)
+  #outputs = layers.Dense(1)(x)
+  ltsm_model = keras.Model(inputs, outputs)
+  return ltsm_model
+
+def learning_rate_schedule():
+  lr_schedule = keras.optimizers.schedules.ExponentialDecay(
+    initial_learning_rate=1e-3,
+    decay_steps=1000,
+    decay_rate=0.9)
+  return lr_schedule
+
 def split_XY_arrays(X, Y):
 
   from sklearn.model_selection import train_test_split
@@ -116,6 +143,11 @@ def LSTM_CV(x,y, sequence_length, num_features):
   #stop trianing if validation loss does not imrove for 5 consecutive epochs
       early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=3, min_delta=1e-3, restore_best_weights=True)
 
+      lr_schedule = keras.optimizers.schedules.ExponentialDecay(
+        initial_learning_rate=1e-3,
+        decay_steps=1000,
+        decay_rate=0.9)
+
       opt = tf.keras.optimizers.Adam(learning_rate=lr_schedule)
       lstm_model.compile(loss="binary_crossentropy", metrics=['acc',tf.keras.metrics.Precision(),tf.keras.metrics.Recall()], optimizer=opt)
   #opt = tf.keras.optimizers.RMSprop(learning_rate=lr_schedule)
@@ -210,6 +242,11 @@ def LSTM_No_CV(x,y, sequence_length, num_features):
   #stop trianing if validation loss does not imrove for 5 consecutive epochs
   early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=3, min_delta=1e-3, restore_best_weights=True)
 
+   lr_schedule = keras.optimizers.schedules.ExponentialDecay(
+        initial_learning_rate=1e-3,
+        decay_steps=1000,
+        decay_rate=0.9)
+
   opt = tf.keras.optimizers.Adam(learning_rate=lr_schedule)
   lstm_model.compile(loss="binary_crossentropy", metrics=['acc',tf.keras.metrics.Precision(),tf.keras.metrics.Recall()], optimizer=opt)
   #opt = tf.keras.optimizers.RMSprop(learning_rate=lr_schedule)
@@ -253,3 +290,67 @@ def LSTM_No_CV(x,y, sequence_length, num_features):
 
   test_f1 = f1_score(test_precision, test_recall)
   print("Test F1: ", test_f1)
+
+
+  
+
+def shap_plots_testing(x,y, df_shuffled_test):
+
+  X_train_array, X_test_array, y_train_array, y_test_array = split_XY_arrays(x, y)
+  print("X_train Shape: ", X_train_array.shape)
+  print("X_test Shape: ", X_test_array.shape)
+  test_tf, test_tf_length = create_tf_dataset(X_test_array, y_test_array, 200)
+  print("test length: ", test_tf_length)
+
+  X_training_array, X_val_array, y_training_array, y_val_array = split_XY_arrays(X_train_array, y_train_array)
+  print("X_training Shape: ", X_training_array.shape)
+  print("X_val Shape: ", X_val_array.shape)
+
+  import tensorflow as tf
+  tf.compat.v1.disable_v2_behavior()
+  from tensorflow import keras
+  import numpy as np
+
+  
+
+  lstm_model = keras.models.load_model("/content/lstm_no_cv")
+
+  #print("test shape", X_test_650MB_array.shape)
+  #print("training array shape", X_training_650MB_array.shape )
+
+  import shap
+
+  #explainer = shap.DeepExplainer(lstm_model_650MB, X_training_650MB_array[:100])
+  explainer = shap.DeepExplainer(lstm_model, X_training_array)
+
+  shap_values1 = explainer.shap_values(X_test_array, check_additivity=False)
+
+  import matplotlib
+  shap.initjs()
+  for i in range(len(df_shuffled_test)):
+    CDRH3_String= df_shuffled_test.iloc[i,4]
+    binding = df_shuffled_test.iloc[i,0]
+    #number_of_none_required = max_CDRH3_length - len(CDRH3_String)
+    #print("Index : " +str(i) + " CDRH3 - ", CDRH3_String)
+    print(str(i+1) + " CDRH3: ", CDRH3_String + ", Actual Binding: ", binding)
+    cdrh3_aa_list = []
+    m=1
+    for aa in CDRH3_String:
+      cdrh3_aa_list.append(aa + str(m))
+      m=m+1
+    #print(cdrh3_aa_list)
+    #for k in range(number_of_none_required):
+    #  cdrh3_aa_list.append('NONE' + str(m))
+    #  m=m+1
+    #print(cdrh3_aa_list)
+    #array_shap_values1_mean=np.mean(np.array(shap_values1[0][i]), axis=1)
+    #array_shap_values1 = np.array(shap_values1[0][i])
+    #Ifthi: I am modifiying this as we shap_values is 4 dimensional array now
+    array_shap_values1 = np.array(shap_values1[i])
+    array_shap_values1_sum=np.sum(array_shap_values1[0:len(CDRH3_String)], axis=1)
+    array_shap_values1_sum_reduced = array_shap_values1_sum[:,0]
+    #Use display if you are indenting the shap.force_plot
+    #display(shap.force_plot(explainer.expected_value[0], array_shap_values1_mean,cdrh3_aa_list))
+    #Ifthi: we don't need display as we use matplotlib otherwise 'None' will be printed after each plot
+    #(shap.force_plot(explainer.expected_value[0], array_shap_values1_sum,cdrh3_aa_list,matplotlib=matplotlib))
+    (shap.force_plot(explainer.expected_value[0], array_shap_values1_sum_reduced,cdrh3_aa_list,matplotlib=matplotlib))
