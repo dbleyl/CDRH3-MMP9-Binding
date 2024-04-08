@@ -266,7 +266,7 @@ def LSTM_No_CV(x,y, sequence_length, num_features):
   #stop trianing if validation loss does not imrove for 5 consecutive epochs
   early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=3, min_delta=1e-3, restore_best_weights=True)
 
-   lr_schedule = keras.optimizers.schedules.ExponentialDecay(
+  lr_schedule = keras.optimizers.schedules.ExponentialDecay(
         initial_learning_rate=1e-3,
         decay_steps=1000,
         decay_rate=0.9)
