@@ -31,6 +31,35 @@ def df_data_preprocessing(df_Positive, df_Negative):
   df_Negative = df_Negative.dropna()
   print("Total negative sequences without missing values : ", len(df_Negative))
 
+  df_Positive.rename(columns = {'CDR-H3':'CDRH3', 'Length':'CDRH3_Length'}, inplace = True)
+  df_Negative.rename(columns = {'CDR-H3':'CDRH3', 'length':'CDRH3_Length', 'count':'Count'}, inplace = True)
+
+  #Creating new column 'Binding' containing affinity labels
+  df_Positive["Binding"] = "Positive"
+  df_Positive["Binding_Labels"] = 1
+  df_Negative["Binding"] = "Negative"
+  df_Negative["Binding_Labels"] = 0
+
+  #df_Positive = df_Positive[df_Positive['CDRH3'].str.count('-').le(0)]
+  #df_Negative = df_Negative[df_Negative['CDRH3'].str.count('-').le(0)]
+
+  #Concatenating the Positive and Negative dataframes
+  #df = pd.concat([df_Positive,df_Negative], axis=0)
+  #Ignoring index will eliminate duplicate indexes
+  df = pd.concat([df_Positive,df_Negative], axis=0, ignore_index=True)
+
+  #Creating a new column 'Start_Idx' to store the starting index of the given CDRH3 in the full amino acid sequence to be used in CDRH3 per-sequence averaging
+  df['Start_Idx'] = 0
+
+  #Creating a new column 'CDRH3_Length' to store the length of CDRH3 to be used in CDRH3 per-sequence averaging
+  df['Full_AA_Sequence'] = df['CDRH3']
+
+  print(df.info())
+
+  print("Total number of positive sequences with CDRH3: ", len(df[(df['Binding_Labels'] == 1)]))
+  print("Total number of negative sequences with CDRH3: ", len(df[(df['Binding_Labels'] == 0)]))
+
+
   df_sort_cdrh3_count = df.sort_values(by=['CDRH3', 'Count'], ascending = [True, False], inplace = False, ignore_index= True)
   df_CDRH3_Unique = df_sort_cdrh3_count.drop_duplicates(subset=["CDRH3"], keep='first',ignore_index = True)
   df_AA_Binding = df_CDRH3_Unique
