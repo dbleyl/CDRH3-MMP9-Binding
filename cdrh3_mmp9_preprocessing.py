@@ -227,8 +227,8 @@ def representations_3B(df_shuffled_list,df_binding_AA_shuffled_list,max_CDRH3_le
       batch_tokens = batch_tokens.to(next(esm2_3B.parameters()).device)
     
       with torch.no_grad():
-        results = esm2_3B(batch_tokens, repr_layers=[33], return_contacts=False)
-        token_representations = results["representations"][33]
+        results = esm2_3B(batch_tokens, repr_layers=[36], return_contacts=False)
+        token_representations = results["representations"][36]
        #print(token_representations)
     
       # Generate CDRH3 per-sequence representations via averaging over CDRH3
