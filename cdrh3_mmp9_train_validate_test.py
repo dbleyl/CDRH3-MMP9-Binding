@@ -162,7 +162,9 @@ def LSTM_CV(x,y, sequence_length, num_features):
       lstm_model= build_LSTM(sequence_length, num_features)
   # check point the model with lowest validation loss
   #checkpoint= keras.callbacks.ModelCheckpoint("final_project_lstm.keras",save_best_only=True)
-      checkpoint= keras.callbacks.ModelCheckpoint( filepath="/content/lstm_cv_fold"+str(fold_no),save_best_only=True)
+      # DCB: fix # ValueError: The filepath provided must end in `.keras` (Keras model format). Received: filepath=/content/lstm_cv_fold1
+
+      checkpoint= keras.callbacks.ModelCheckpoint( filepath="/content/lstm_cv_fold"+str(fold_no)+".keras",save_best_only=True)
 
   #stop trianing if validation loss does not imrove for 5 consecutive epochs
       early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=3, min_delta=1e-3, restore_best_weights=True)
@@ -212,7 +214,9 @@ def LSTM_CV(x,y, sequence_length, num_features):
   val_f1_cv_best = []
   test_f1_cv_best = []
   for i in range(10):
-    lstm_model_CV = keras.models.load_model("/content/lstm_cv_fold"+str(i+1))
+
+    # DCB: fix # ValueError: The filepath provided must end in `.keras` (Keras model format). Received: filepath=/content/lstm_cv_fold1
+    lstm_model_CV = keras.models.load_model("/content/lstm_cv_fold"+str(i+1)+".keras")
     validation_cv_metrics= lstm_model_CV.evaluate(val_tf, verbose=0)
     validation_cv_metrics_best.append(validation_cv_metrics)
     val_f1 = f1_score(validation_cv_metrics[2], validation_cv_metrics[3])
@@ -261,7 +265,8 @@ def LSTM_No_CV(x,y, sequence_length, num_features):
   lstm_model= build_LSTM(sequence_length, num_features)
   # check point the model with lowest validation loss
   #checkpoint= keras.callbacks.ModelCheckpoint("final_project_lstm.keras",save_best_only=True)
-  checkpoint= keras.callbacks.ModelCheckpoint( filepath="/content/lstm_no_cv",save_best_only=True)
+  # DCB: fix # ValueError: The filepath provided must end in `.keras` (Keras model format). Received: filepath=/content/lstm_cv_fold1
+  checkpoint= keras.callbacks.ModelCheckpoint( filepath="/content/lstm_no_cv.keras",save_best_only=True)
 
   #stop trianing if validation loss does not imrove for 5 consecutive epochs
   early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=3, min_delta=1e-3, restore_best_weights=True)
@@ -292,7 +297,8 @@ def LSTM_No_CV(x,y, sequence_length, num_features):
 
   #Validation metrics
 
-  lstm_model = keras.models.load_model("/content/lstm_no_cv")
+  # DCB: fix # ValueError: The filepath provided must end in `.keras` (Keras model format). Received: filepath=/content/lstm_cv_fold1
+  lstm_model = keras.models.load_model("/content/lstm_no_cv.keras")
 
   # evaluate the model
   #loss, accuracy, f1_score, precision, recall = model.evaluate(Xtest, ytest, verbose=0)
