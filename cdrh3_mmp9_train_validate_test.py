@@ -102,8 +102,11 @@ def create_tf_dataset(X, Y, batch_size):
   tf_dataset = tf.data.Dataset.from_tensor_slices((X, Y))
   #print("train length: ", len(tf_dataset))
   # the length function is valid only in eager mode in tensorflow version 2
-  tf_length = len(tf_dataset)
-  #tf_length= tf_dataset.cardinality()
+
+  # DCB: TypeError: tf.data.Dataset only supports 'len' in eager mode. Use 'tf.data.Dataset.cardinality()' instead.
+  # tf_length = len(tf_dataset)
+  # tf_length= tf_dataset.cardinality()
+  tf_length= tf_dataset.cardinality().numpy()
   tf_dataset = tf_dataset.shuffle(buffer_size=1000, reshuffle_each_iteration=True)
   tf_dataset = tf_dataset.batch(batch_size).prefetch(AUTOTUNE)
 
