@@ -342,8 +342,9 @@ def shap_plots_testing(x,y, df_shuffled_test):
   import numpy as np
 
   
-
-  lstm_model = keras.models.load_model("/content/lstm_no_cv")
+  # DCB: ValueError (need .keras)
+  # lstm_model = keras.models.load_model("/content/lstm_no_cv")
+  lstm_model = keras.models.load_model("/content/lstm_no_cv.keras")
 
   #print("test shape", X_test_650MB_array.shape)
   #print("training array shape", X_training_650MB_array.shape )
