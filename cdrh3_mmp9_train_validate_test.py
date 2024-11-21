@@ -105,8 +105,9 @@ def create_tf_dataset(X, Y, batch_size):
 
   # DCB: TypeError: tf.data.Dataset only supports 'len' in eager mode. Use 'tf.data.Dataset.cardinality()' instead.
   # tf_length = len(tf_dataset)
-  # tf_length= tf_dataset.cardinality()
-  tf_length= tf_dataset.cardinality().numpy()
+  tf_length= tf_dataset.cardinality()
+  # Following code only works in 'eager' mode:
+  # tf_length= tf_dataset.cardinality().numpy()
   tf_dataset = tf_dataset.shuffle(buffer_size=1000, reshuffle_each_iteration=True)
   tf_dataset = tf_dataset.batch(batch_size).prefetch(AUTOTUNE)
 
@@ -347,7 +348,9 @@ def shap_plots_testing(x,y, df_shuffled_test):
   
   # DCB: ValueError (need .keras)
   # lstm_model = keras.models.load_model("/content/lstm_no_cv")
-  lstm_model = keras.models.load_model("/content/lstm_no_cv.keras")
+  # lstm_model = keras.models.load_model("/content/lstm_no_cv.keras")
+  # DCB: ValueError (custom_object_scope), Unknown object 'Functional'.
+  lstm_model = keras.models.load_model("/content/lstm_no_cv.keras", custom_objects={"Functional": keras.models.Model})
 
   #print("test shape", X_test_650MB_array.shape)
   #print("training array shape", X_training_650MB_array.shape )
