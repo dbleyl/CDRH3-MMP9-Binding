@@ -85,6 +85,13 @@ def df_data_preprocessing(df_Positive, df_Negative):
   df_binding_AA_shuffled_list = list(df_AA_shuffled.to_records(index=False))
   df_sequence_shuffled_list= df_shuffled['Full_AA_Sequence'].tolist()
 
+  # DCB: the Full_AA_Sequence and CDRH3 are all the same length:
+  print(f"Number of rows with different lengths for CDRH3 and Full_AA_Sequence {df_shuffled[df_shuffled['CDRH3'].apply(len) != df_shuffled['Full_AA_Sequence'].apply(len)].shape[0]}")
+
+  # DCB: This returns the shuffled, '-' removed, dataframe with 'Binding','Binding_Labels', 'Full_AA_Sequence','Count','CDRH3','Start_Idx', 'CDRH3_Length' columns,
+  # DCB: A list of numpy records of the same data,
+  # DCB: A list of numpy records containing only the Binding and the Full_AA_Sequence
+  # DCB: A list of the Full_AA_Sequence (just a list of strings).
   return df_shuffled, df_shuffled_list, df_binding_AA_shuffled_list, df_sequence_shuffled_list
 
 
